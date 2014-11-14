@@ -192,13 +192,17 @@
     <Content Include="library\FISCA.xml" />
     <Content Include="library\K12.Data.dll" />
     <Content Include="library\K12.Data.pdb" />
-    <Content Include="library\K12.Data.xml" />
+    <Content Include="library\K12.Data.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="library\K12.Presentation.dll" />
     <Content Include="library\K12.Presentation.xml" />
     <Content Include="library\SHSchool.Data.dll" />
     <Content Include="library\SHSchool.Data.pdb" />
     <Content Include="library\SHSchool.Data.xml" />
     <Content Include="library\SmartSchool.Core.dll" />
+    <Content Include="library\SmartSchool.Core.HS.dll" />
+    <Content Include="library\SmartSchool.Core.HS.pdb" />
     <Content Include="library\SmartSchool.Core.pdb" />
     <Content Include="library\SmartSchool.Customization.Data.dll" />
     <Content Include="library\SmartSchool.Customization.Data.pdb" />
