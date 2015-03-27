@@ -130,12 +130,26 @@ namespace SH_YearScoreReport_yhcvs
         /// 在資料取出後，把資料從儲存欄位轉換至資料欄位
         /// </summary>
         public void Decode()
-        {            
-            this.PrintSubjectList = new List<string>(this.PrintSubjectListString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
-         
-            this.TagRank1SubjectList = new List<string>(this.TagRank1SubjectListString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
-            this.TagRank2SubjectList = new List<string>(this.TagRank2SubjectListString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
-            this.Template = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream)));
+        {
+            if (!string.IsNullOrEmpty(this.PrintSubjectListString))
+                this.PrintSubjectList = new List<string>(this.PrintSubjectListString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
+            else
+                this.PrintSubjectList = new List<string>();
+
+            if (!string.IsNullOrEmpty(this.TagRank1SubjectListString))
+                this.TagRank1SubjectList = new List<string>(this.TagRank1SubjectListString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
+            else
+                this.TagRank1SubjectList = new List<string>();
+
+            if (!string.IsNullOrEmpty(this.TagRank2SubjectListString))
+                this.TagRank2SubjectList = new List<string>(this.TagRank2SubjectListString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
+            else
+                this.TagRank2SubjectList = new List<string>();
+
+            if (this.TemplateStream != null)
+                this.Template = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream)));
+            else
+                this.Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.員林家商學年成績單樣版));
         }
     }
 }

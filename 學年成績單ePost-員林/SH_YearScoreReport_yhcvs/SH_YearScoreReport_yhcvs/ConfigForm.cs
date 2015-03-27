@@ -21,62 +21,38 @@ namespace SH_YearScoreReport_yhcvs
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
 
+        BackgroundWorker _bgLoadSubject=new BackgroundWorker();
+
+        string _SchoolYear = "";
+        List<string> _SubjectNameList;
+        List<string> _SelSubjNameList;
+
         public ConfigForm()
         {
             InitializeComponent();
-            
+            iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
+            _SubjectNameList = new List<string>();
+            _SelSubjNameList = new List<string>();
             BackgroundWorker bkw = new BackgroundWorker();
+            
+            _bgLoadSubject.DoWork += _bgLoadSubject_DoWork;
+            _bgLoadSubject.RunWorkerCompleted += _bgLoadSubject_RunWorkerCompleted;
             bkw.DoWork += delegate
             {
                 bkw.ReportProgress(1);
                 //預設學年度學期
-                _DefalutSchoolYear = "" + K12.Data.School.DefaultSchoolYear;
-                _DefaultSemester = "" + K12.Data.School.DefaultSemester;
+                _DefalutSchoolYear =  K12.Data.School.DefaultSchoolYear;
+                _DefaultSemester =  K12.Data.School.DefaultSemester;
 
-                _TagConfigRecords = K12.Data.TagConfig.SelectByCategory(TagCategory.Student);
-                bkw.ReportProgress(20);
-                //學生類別清單
-                
-                #region 整理對應科目
-
-                List<string> SubjectNameList = new List<string>();
                 bkw.ReportProgress(30);
-
-                QueryHelper qh = new QueryHelper();
-
-                string strSQ = @"SELECT DISTINCT tmp.subject
-FROM xpath_table( 'id',
-				'''<root>''||score_info||''</root>''',
-				'sems_subj_score',
-				'/root/SemesterSubjectScoreInfo/Subject/@科目',
-				'ref_student_id IN ( select student.id from student 
-									INNER JOIN class ON student.ref_class_id = class.id 
-									WHERE student.status=1 AND sems_subj_score="+_DefalutSchoolYear+@")'
-				) 
-AS tmp(id int, subject varchar(200))";
-                DataTable dt = qh.Select(strSQ);
-                foreach (DataRow dr in dt.Rows)
-                    SubjectNameList.Add(dr[0].ToString());
+                _TagConfigRecords = K12.Data.TagConfig.SelectByCategory(TagCategory.Student);
                 
-                bkw.ReportProgress(60);
-
-                SubjectNameList.Sort(new StringComparer("國文"
-                                    , "英文"
-                                    , "數學"
-                                    , "理化"
-                                    , "生物"
-                                    , "社會"
-                                    , "物理"
-                                    , "化學"
-                                    , "歷史"
-                                    , "地理"
-                                    , "公民")
-                    );
-
+                //學生類別清單                
+                #region 整理對應科目
                 bkw.ReportProgress(70);
            
                 #endregion
-                bkw.ReportProgress(80);
+                
                 _Configures = _AccessHelper.Select<Configure>();
                 bkw.ReportProgress(100);
 
@@ -140,6 +116,39 @@ AS tmp(id int, subject varchar(200))";
                 }
             };
             bkw.RunWorkerAsync();
+        }
+
+        void _bgLoadSubject_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            foreach (string subjName in _SubjectNameList)
+            {
+                var i1 = lvSubject.Items.Add(subjName);
+                var i2 = lvSubjTag1.Items.Add(subjName);
+                var i3 = lvSubjTag2.Items.Add(subjName);
+                if (Configure != null && Configure.PrintSubjectList.Contains(subjName))
+                    i1.Checked = true;
+                if (Configure != null && Configure.TagRank1SubjectList.Contains(subjName))
+                    i2.Checked = true;
+                if (Configure != null && Configure.TagRank2SubjectList.Contains(subjName))
+                    i3.Checked = true;
+                if (!_SelSubjNameList.Contains(subjName))
+                {
+                    i1.ForeColor = Color.DarkGray;
+                    i2.ForeColor = Color.DarkGray;
+                    i3.ForeColor = Color.DarkGray;
+                }
+            }
+
+            lvSubject.ResumeLayout(true);
+            lvSubjTag1.ResumeLayout(true);
+            lvSubjTag2.ResumeLayout(true);
+            iptSchoolYear.Enabled = true;
+        }
+
+        void _bgLoadSubject_DoWork(object sender, DoWorkEventArgs e)
+        {            
+            _SubjectNameList = Utility.GetSubjectNameListBySchoolYear(_SchoolYear);
+            _SelSubjNameList = Utility.GetSubjectNameListBySchoolYearSelectStudentID(K12.Presentation.NLDPanels.Student.SelectedSource, _SchoolYear);
         }
 
         public Configure Configure { get; private set; }
@@ -316,12 +325,7 @@ AS tmp(id int, subject varchar(200))";
                     this.Configure.WithPrevSemesterScore = false;
                     while (fields.Contains("科目名稱" + (this.Configure.SubjectLimit + 1)))
                     {
-                        if (fields.Contains("上學期科目原始成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithPrevSemesterScore = true;
-                        if (fields.Contains("上學期科目補考成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithPrevSemesterScore = true;
-                        if (fields.Contains("上學期科目重修成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithPrevSemesterScore = true;
-                        if (fields.Contains("上學期科目手動調整成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithPrevSemesterScore = true;
-                        if (fields.Contains("上學期科目學年調整成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithPrevSemesterScore = true;
-                        if (fields.Contains("上學期科目成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithPrevSemesterScore = true;
+                     
                         if (fields.Contains("學年科目成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithSchoolYearScore = true;
                         this.Configure.SubjectLimit++;
                     }
@@ -552,13 +556,33 @@ AS tmp(id int, subject varchar(200))";
         private void cblvSubjTag1_CheckedChanged(object sender, EventArgs e)
         {
             foreach (ListViewItem lvi in lvSubjTag1.Items)
-                lvi.Checked = cblvSubject.Checked;
+                lvi.Checked = cblvSubjTag1.Checked;
         }
 
         private void cblvSubjTag2_CheckedChanged(object sender, EventArgs e)
         {
             foreach (ListViewItem lvi in lvSubjTag2.Items)
-                lvi.Checked = cblvSubject.Checked;
+                lvi.Checked = cblvSubjTag2.Checked;
+        }
+
+        private void iptSchoolYear_ValueChanged(object sender, EventArgs e)
+        {
+            lvSubject.SuspendLayout();
+            lvSubjTag1.SuspendLayout();
+            lvSubjTag2.SuspendLayout();
+            lvSubject.Items.Clear();
+            lvSubjTag1.Items.Clear();
+            lvSubjTag2.Items.Clear();
+
+            _SchoolYear = iptSchoolYear.Value.ToString();
+            iptSchoolYear.Enabled = false;
+            _bgLoadSubject.RunWorkerAsync();
+        }
+
+     
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

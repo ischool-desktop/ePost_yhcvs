@@ -648,5 +648,89 @@ namespace SH_YearScoreReport_yhcvs
                 }
             }
         }
+
+        /// <summary>
+        /// 傳入學年度，取得學生狀態一般的科目名稱
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <returns></returns>
+        public static List<string> GetSubjectNameListBySchoolYear(string SchoolYear)
+        {
+            List<string> retVal = new List<string>();
+            QueryHelper qh = new QueryHelper();
+
+            string strSQL = @"SELECT DISTINCT tmp.subject
+FROM xpath_table( 'id',
+				'''<root>''||score_info||''</root>''',
+				'sems_subj_score',
+				'/root/SemesterSubjectScoreInfo/Subject/@科目',
+				'ref_student_id IN ( select student.id from student 
+									INNER JOIN class ON student.ref_class_id = class.id 
+									WHERE student.status=1 and class.grade_year in(1,2,3)) AND sems_subj_score.school_year=" + SchoolYear + @"')				 
+AS tmp(id int, subject varchar(200))  order by subject asc";
+            DataTable dt = qh.Select(strSQL);
+            foreach (DataRow dr in dt.Rows)
+            {
+                string name = dr[0].ToString();
+                if (!retVal.Contains(name))
+                    retVal.Add(name);
+            }
+            retVal.Sort(new StringComparer("國文"
+                                , "英文"
+                                , "數學"
+                                , "理化"
+                                , "生物"
+                                , "社會"
+                                , "物理"
+                                , "化學"
+                                , "歷史"
+                                , "地理"
+                                , "公民")
+                );
+            return retVal;
+        }
+
+        /// <summary>
+        /// 傳入學年度，回傳畫面上所選學生科目
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <returns></returns>
+        public static List<string> GetSubjectNameListBySchoolYearSelectStudentID(List<string> StudentIDList,string SchoolYear)
+        {
+            List<string> retVal = new List<string>();
+            QueryHelper qh = new QueryHelper();
+
+            string strSQL = @"SELECT DISTINCT tmp.subject
+FROM xpath_table( 'id',
+				'''<root>''||score_info||''</root>''',
+				'sems_subj_score',
+				'/root/SemesterSubjectScoreInfo/Subject/@科目',
+				'ref_student_id IN ( select student.id from student 
+									INNER JOIN class ON student.ref_class_id = class.id 
+									WHERE student.id in(" + string.Join(",", StudentIDList.ToArray()) + @")) AND sems_subj_score.school_year=" + SchoolYear + @"')				 
+AS tmp(id int, subject varchar(200))  order by subject asc";
+            DataTable dt = qh.Select(strSQL);
+            foreach (DataRow dr in dt.Rows)
+            {
+                string name = dr[0].ToString();
+                if (!retVal.Contains(name))
+                    retVal.Add(name);                
+            }
+                
+
+            retVal.Sort(new StringComparer("國文"
+                                , "英文"
+                                , "數學"
+                                , "理化"
+                                , "生物"
+                                , "社會"
+                                , "物理"
+                                , "化學"
+                                , "歷史"
+                                , "地理"
+                                , "公民")
+                );
+            return retVal;
+        }
     }
 }
