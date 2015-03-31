@@ -33,8 +33,6 @@
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.lvSubject = new DevComponents.DotNetBar.Controls.ListViewEx();
-            this.labelX3 = new DevComponents.DotNetBar.LabelX();
-            this.cboRankRilter = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.lvSubjTag1 = new DevComponents.DotNetBar.Controls.ListViewEx();
             this.cboTagRank2 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
@@ -43,7 +41,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cblvSubject = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.iptSchoolYear = new DevComponents.Editors.IntegerInput();
             this.cboConfigure = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -65,13 +62,14 @@
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.panel4 = new System.Windows.Forms.Panel();
             this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
+            this.iptSchoolYear = new DevComponents.Editors.IntegerInput();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             this.SuspendLayout();
             // 
             // cboTagRank1
@@ -111,7 +109,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(12, 147);
+            this.labelX2.Location = new System.Drawing.Point(12, 114);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(74, 21);
             this.labelX2.TabIndex = 5;
@@ -128,40 +126,12 @@
             this.lvSubject.Border.Class = "ListViewBorder";
             this.lvSubject.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lvSubject.CheckBoxes = true;
-            this.lvSubject.Location = new System.Drawing.Point(12, 174);
+            this.lvSubject.Location = new System.Drawing.Point(12, 141);
             this.lvSubject.Name = "lvSubject";
-            this.lvSubject.Size = new System.Drawing.Size(366, 286);
+            this.lvSubject.Size = new System.Drawing.Size(366, 319);
             this.lvSubject.TabIndex = 8;
             this.lvSubject.UseCompatibleStateImageBehavior = false;
             this.lvSubject.View = System.Windows.Forms.View.List;
-            // 
-            // labelX3
-            // 
-            this.labelX3.AutoSize = true;
-            this.labelX3.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX3.BackgroundStyle.Class = "";
-            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(12, 115);
-            this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(114, 21);
-            this.labelX3.TabIndex = 5;
-            this.labelX3.Text = "不排名學生類別：";
-            // 
-            // cboRankRilter
-            // 
-            this.cboRankRilter.DisplayMember = "Text";
-            this.cboRankRilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboRankRilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRankRilter.FormattingEnabled = true;
-            this.cboRankRilter.ItemHeight = 19;
-            this.cboRankRilter.Location = new System.Drawing.Point(133, 113);
-            this.cboRankRilter.Name = "cboRankRilter";
-            this.cboRankRilter.Size = new System.Drawing.Size(160, 25);
-            this.cboRankRilter.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboRankRilter.TabIndex = 7;
             // 
             // lvSubjTag1
             // 
@@ -236,7 +206,7 @@
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(66, 81);
+            this.labelX7.Location = new System.Drawing.Point(26, 77);
             this.labelX7.Name = "labelX7";
             this.labelX7.Size = new System.Drawing.Size(60, 21);
             this.labelX7.TabIndex = 5;
@@ -256,14 +226,14 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 518F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 509F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 509);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.cblvSubject);
             this.panel1.Controls.Add(this.iptSchoolYear);
+            this.panel1.Controls.Add(this.cblvSubject);
             this.panel1.Controls.Add(this.cboConfigure);
             this.panel1.Controls.Add(this.linkLabel4);
             this.panel1.Controls.Add(this.linkLabel3);
@@ -272,8 +242,6 @@
             this.panel1.Controls.Add(this.linkLabel1);
             this.panel1.Controls.Add(this.lvSubject);
             this.panel1.Controls.Add(this.labelX2);
-            this.panel1.Controls.Add(this.cboRankRilter);
-            this.panel1.Controls.Add(this.labelX3);
             this.panel1.Controls.Add(this.labelX11);
             this.panel1.Controls.Add(this.labelX7);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -282,7 +250,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(392, 509);
             this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // cblvSubject
             // 
@@ -292,31 +259,13 @@
             // 
             this.cblvSubject.BackgroundStyle.Class = "";
             this.cblvSubject.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.cblvSubject.Location = new System.Drawing.Point(88, 147);
+            this.cblvSubject.Location = new System.Drawing.Point(88, 114);
             this.cblvSubject.Name = "cblvSubject";
             this.cblvSubject.Size = new System.Drawing.Size(54, 21);
             this.cblvSubject.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cblvSubject.TabIndex = 13;
             this.cblvSubject.Text = "全選";
             this.cblvSubject.CheckedChanged += new System.EventHandler(this.cblvSubject_CheckedChanged);
-            // 
-            // iptSchoolYear
-            // 
-            // 
-            // 
-            // 
-            this.iptSchoolYear.BackgroundStyle.Class = "DateTimeInputBackground";
-            this.iptSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSchoolYear.Location = new System.Drawing.Point(133, 79);
-            this.iptSchoolYear.MaxValue = 1000;
-            this.iptSchoolYear.MinValue = 1;
-            this.iptSchoolYear.Name = "iptSchoolYear";
-            this.iptSchoolYear.ShowUpDown = true;
-            this.iptSchoolYear.Size = new System.Drawing.Size(80, 25);
-            this.iptSchoolYear.TabIndex = 12;
-            this.iptSchoolYear.Value = 1;
-            this.iptSchoolYear.ValueChanged += new System.EventHandler(this.iptSchoolYear_ValueChanged);
             // 
             // cboConfigure
             // 
@@ -360,7 +309,7 @@
             // 
             this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(267, 483);
+            this.linkLabel5.Location = new System.Drawing.Point(267, 480);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(112, 17);
             this.linkLabel5.TabIndex = 11;
@@ -372,7 +321,7 @@
             // 
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(102, 483);
+            this.linkLabel2.Location = new System.Drawing.Point(102, 480);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(86, 17);
             this.linkLabel2.TabIndex = 10;
@@ -384,7 +333,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(10, 483);
+            this.linkLabel1.Location = new System.Drawing.Point(10, 480);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(86, 17);
             this.linkLabel1.TabIndex = 9;
@@ -617,6 +566,25 @@
             this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
             this.circularProgress1.TabIndex = 13;
             // 
+            // iptSchoolYear
+            // 
+            this.iptSchoolYear.AllowEmptyState = false;
+            // 
+            // 
+            // 
+            this.iptSchoolYear.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.iptSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptSchoolYear.Location = new System.Drawing.Point(93, 75);
+            this.iptSchoolYear.MaxValue = 1000;
+            this.iptSchoolYear.MinValue = 90;
+            this.iptSchoolYear.Name = "iptSchoolYear";
+            this.iptSchoolYear.ShowUpDown = true;
+            this.iptSchoolYear.Size = new System.Drawing.Size(80, 25);
+            this.iptSchoolYear.TabIndex = 14;
+            this.iptSchoolYear.Value = 90;
+            this.iptSchoolYear.ValueChanged += new System.EventHandler(this.iptSchoolYear_ValueChanged);
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -629,17 +597,17 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "ConfigForm";
-            this.Text = "學年成績單";
+            this.Text = "學年成績單(固定排名)";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -650,8 +618,6 @@
         private DevComponents.DotNetBar.LabelX labelX1;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.Controls.ListViewEx lvSubject;
-        private DevComponents.DotNetBar.LabelX labelX3;
-        private DevComponents.DotNetBar.Controls.ComboBoxEx cboRankRilter;
         private DevComponents.DotNetBar.Controls.ListViewEx lvSubjTag1;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboTagRank2;
         private DevComponents.DotNetBar.LabelX labelX5;
@@ -678,9 +644,9 @@
         private DevComponents.DotNetBar.ButtonX btnSaveConfig;
         private System.Windows.Forms.LinkLabel linkLabel5;
         private DevComponents.DotNetBar.Controls.CheckBoxX chkExportEPOST;
-        private DevComponents.Editors.IntegerInput iptSchoolYear;
         private DevComponents.DotNetBar.Controls.CheckBoxX cblvSubject;
         private DevComponents.DotNetBar.Controls.CheckBoxX cblvSubjTag1;
         private DevComponents.DotNetBar.Controls.CheckBoxX cblvSubjTag2;
+        private DevComponents.Editors.IntegerInput iptSchoolYear;
     }
 }

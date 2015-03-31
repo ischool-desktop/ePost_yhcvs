@@ -80,7 +80,13 @@ namespace SH_YearScoreReport_yhcvs
         static Dictionary<string, decimal> _studPassSumCreditDict1 = new Dictionary<string, decimal>();
         // 第2學期取得
         static Dictionary<string, decimal> _studPassSumCreditDict2 = new Dictionary<string, decimal>();
-        // 學年取得
+
+        // 第1學期累計取得學分
+        static Dictionary<string, decimal> _studSumPassCreditDict1 = new Dictionary<string, decimal>();
+        // 第2學期累計取得學分
+        static Dictionary<string, decimal> _studSumPassCreditDict2 = new Dictionary<string, decimal>();
+
+        // 累計取得
         static Dictionary<string, decimal> _studPassSumCreditDictAll = new Dictionary<string, decimal>();
         static DataTable _dtEpost = new DataTable();
 
@@ -138,6 +144,8 @@ namespace SH_YearScoreReport_yhcvs
                 table.Columns.Add("姓名");
                 table.Columns.Add("第1學期取得學分數");
                 table.Columns.Add("第2學期取得學分數");
+                table.Columns.Add("第1學期累計取得學分數");
+                table.Columns.Add("第2學期累計取得學分數");
                 table.Columns.Add("累計取得學分數");
 
                 if (conf.SubjectLimit == 0)
@@ -360,14 +368,15 @@ namespace SH_YearScoreReport_yhcvs
                         try
                         {
                             Aspose.Words.Document temp = new Aspose.Words.Document();
-                            temp = conf.Template;
+                            temp = conf.Template;                        
+
                             DataTable dt = table.Clone();
                             List<DataRow> list = new List<DataRow>();
                             foreach (string className in _ClassDic.Keys)
                             {
                                 foreach (int idx in _ClassDic[className])
                                 {
-                                    list.Add(table.Rows[idx]);                                    
+                                    list.Add(table.Rows[idx]);
                                 }
 
                                 list.Sort(DataSort);
@@ -387,7 +396,7 @@ namespace SH_YearScoreReport_yhcvs
                         catch (Exception ex)
                         {
                             SmartSchool.ErrorReporting.ErrorMessgae errormsg = new SmartSchool.ErrorReporting.ErrorMessgae(ex);
-                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。" + ex.Message, "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                             return;
                         }
                     }
@@ -1085,6 +1094,8 @@ namespace SH_YearScoreReport_yhcvs
 
                         _studPassSumCreditDict1.Clear();
                         _studPassSumCreditDict2.Clear();
+                        _studSumPassCreditDict1.Clear();
+                        _studSumPassCreditDict2.Clear();
                         _studPassSumCreditDictAll.Clear();
 
                         progressCount = 0;
@@ -1095,10 +1106,17 @@ namespace SH_YearScoreReport_yhcvs
                             if (!_studPassSumCreditDict1.ContainsKey(stuRec.StudentID))
                                 _studPassSumCreditDict1.Add(stuRec.StudentID, 0);
 
-
                             // 第2學期取得學分數
                             if (!_studPassSumCreditDict2.ContainsKey(stuRec.StudentID))
                                 _studPassSumCreditDict2.Add(stuRec.StudentID, 0);
+
+                            // 第1學期累計取得學分數
+                            if (!_studSumPassCreditDict1.ContainsKey(stuRec.StudentID))
+                                _studSumPassCreditDict1.Add(stuRec.StudentID, 0);
+
+                            // 第2學期累計取得學分數
+                            if (!_studSumPassCreditDict2.ContainsKey(stuRec.StudentID))
+                                _studSumPassCreditDict2.Add(stuRec.StudentID, 0);
 
                             // 學年取得學分數
                             if (!_studPassSumCreditDictAll.ContainsKey(stuRec.StudentID))
@@ -1323,8 +1341,10 @@ namespace SH_YearScoreReport_yhcvs
                             }
 
                             var subjectNameList = new List<string>();
+                            // 有勾選科目
                             foreach (string name in subjectNames)
                             {
+                                if(conf.PrintSubjectList.Contains(name))
                                 subjectNameList.Add(name);
                             }
                          
@@ -1356,6 +1376,14 @@ namespace SH_YearScoreReport_yhcvs
                                     if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Semester.ToString() == "2" && semesterSubjectScore.Pass)
                                         _studPassSumCreditDict2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
+                                    // 第1學期累計取得學分
+                                    if (semesterSubjectScore.Semester.ToString() == "1" && semesterSubjectScore.Pass)
+                                        _studSumPassCreditDict1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+
+                                    // 第2學期累計取得學分
+                                    if (semesterSubjectScore.Semester.ToString() == "2" && semesterSubjectScore.Pass)
+                                        _studSumPassCreditDict2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+
                                     // 累計取得
                                     if (semesterSubjectScore.Pass)
                                         _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.CreditDec();
@@ -1364,6 +1392,8 @@ namespace SH_YearScoreReport_yhcvs
 
                             row["第1學期取得學分數"] = _studPassSumCreditDict1[stuRec.StudentID];
                             row["第2學期取得學分數"] = _studPassSumCreditDict2[stuRec.StudentID];
+                            row["第1學期累計取得學分數"] = _studSumPassCreditDict1[stuRec.StudentID];
+                            row["第2學期累計取得學分數"] = _studSumPassCreditDict2[stuRec.StudentID];
                             row["累計取得學分數"] = _studPassSumCreditDictAll[stuRec.StudentID];
 
 
@@ -1733,8 +1763,7 @@ namespace SH_YearScoreReport_yhcvs
                             #endregion
 
                             #endregion
-                            
-                          
+                                                     
 
                             table.Rows.Add(row);
                             // debug
@@ -1745,10 +1774,19 @@ namespace SH_YearScoreReport_yhcvs
                         }
 
                         bkw.ReportProgress(90);
-                     
+
+                        // 取得樣版合併欄位名稱
+                        StreamWriter sw = new StreamWriter(Application.StartupPath + "\\fieldnames.txt");
+                        foreach (string str in conf.Template.MailMerge.GetFieldNames())
+                        {
+                            sw.WriteLine(str);
+                        }
+                        sw.Flush();
+                        sw.Close();
                         document = conf.Template;
                         document.MailMerge.Execute(table);
-
+                        document.MailMerge.RemoveEmptyParagraphs = true;
+                        document.MailMerge.DeleteFields();
 
                     }
                     catch (Exception exception)

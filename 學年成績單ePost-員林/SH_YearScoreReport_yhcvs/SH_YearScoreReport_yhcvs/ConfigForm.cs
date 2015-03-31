@@ -21,8 +21,10 @@ namespace SH_YearScoreReport_yhcvs
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
 
-        BackgroundWorker _bgLoadSubject=new BackgroundWorker();
+        bool _isbgLoadSubjectBusy = false;
 
+        BackgroundWorker _bgLoadSubject=new BackgroundWorker();
+        
         string _SchoolYear = "";
         List<string> _SubjectNameList;
         List<string> _SelSubjNameList;
@@ -30,7 +32,9 @@ namespace SH_YearScoreReport_yhcvs
         public ConfigForm()
         {
             InitializeComponent();
+
             iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
+            iptSchoolYear.IsInputReadOnly = true;
             _SubjectNameList = new List<string>();
             _SelSubjNameList = new List<string>();
             BackgroundWorker bkw = new BackgroundWorker();
@@ -87,21 +91,21 @@ namespace SH_YearScoreReport_yhcvs
                         tag.Add(item.Name);
                     }
                 }
-                cboRankRilter.Items.Clear();
+                //cboRankRilter.Items.Clear();
                 cboTagRank1.Items.Clear();
                 cboTagRank2.Items.Clear();
-                cboRankRilter.Items.Add("");
+                //cboRankRilter.Items.Add("");
                 cboTagRank1.Items.Add("");
                 cboTagRank2.Items.Add("");
                 foreach (var s in prefix)
                 {
-                    cboRankRilter.Items.Add("[" + s + "]");
+                    //cboRankRilter.Items.Add("[" + s + "]");
                     cboTagRank1.Items.Add("[" + s + "]");
                     cboTagRank2.Items.Add("[" + s + "]");
                 }
                 foreach (var s in tag)
                 {
-                    cboRankRilter.Items.Add(s);
+                    //cboRankRilter.Items.Add(s);
                     cboTagRank1.Items.Add(s);
                     cboTagRank2.Items.Add(s);
                 }
@@ -113,42 +117,55 @@ namespace SH_YearScoreReport_yhcvs
                 else
                 {
                     cboConfigure.SelectedIndex = -1;
-                }
+                }               
+               
             };
             bkw.RunWorkerAsync();
         }
 
         void _bgLoadSubject_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (string subjName in _SubjectNameList)
-            {
-                var i1 = lvSubject.Items.Add(subjName);
-                var i2 = lvSubjTag1.Items.Add(subjName);
-                var i3 = lvSubjTag2.Items.Add(subjName);
-                if (Configure != null && Configure.PrintSubjectList.Contains(subjName))
-                    i1.Checked = true;
-                if (Configure != null && Configure.TagRank1SubjectList.Contains(subjName))
-                    i2.Checked = true;
-                if (Configure != null && Configure.TagRank2SubjectList.Contains(subjName))
-                    i3.Checked = true;
-                if (!_SelSubjNameList.Contains(subjName))
-                {
-                    i1.ForeColor = Color.DarkGray;
-                    i2.ForeColor = Color.DarkGray;
-                    i3.ForeColor = Color.DarkGray;
-                }
-            }
 
-            lvSubject.ResumeLayout(true);
-            lvSubjTag1.ResumeLayout(true);
-            lvSubjTag2.ResumeLayout(true);
-            iptSchoolYear.Enabled = true;
+            if (_isbgLoadSubjectBusy)
+            {
+                _isbgLoadSubjectBusy = false;                
+                _bgLoadSubject.RunWorkerAsync();
+            }
+            else
+            {            
+
+                foreach (string subjName in _SubjectNameList)
+                {
+                    var i1 = lvSubject.Items.Add(subjName);
+                    var i2 = lvSubjTag1.Items.Add(subjName);
+                    var i3 = lvSubjTag2.Items.Add(subjName);
+                    if (Configure != null && Configure.PrintSubjectList.Contains(subjName))
+                        i1.Checked = true;
+                    if (Configure != null && Configure.TagRank1SubjectList.Contains(subjName))
+                        i2.Checked = true;
+                    if (Configure != null && Configure.TagRank2SubjectList.Contains(subjName))
+                        i3.Checked = true;
+                    if (!_SelSubjNameList.Contains(subjName))
+                    {
+                        i1.ForeColor = Color.DarkGray;
+                        i2.ForeColor = Color.DarkGray;
+                        i3.ForeColor = Color.DarkGray;
+                    }
+                }
+
+                lvSubject.ResumeLayout(true);
+                lvSubjTag1.ResumeLayout(true);
+                lvSubjTag2.ResumeLayout(true);
+                iptSchoolYear.IsInputReadOnly = false;
+
+            }            
+            
         }
 
         void _bgLoadSubject_DoWork(object sender, DoWorkEventArgs e)
         {            
             _SubjectNameList = Utility.GetSubjectNameListBySchoolYear(_SchoolYear);
-            _SelSubjNameList = Utility.GetSubjectNameListBySchoolYearSelectStudentID(K12.Presentation.NLDPanels.Student.SelectedSource, _SchoolYear);
+            _SelSubjNameList = Utility.GetSubjectNameListBySchoolYearSelectStudentID(K12.Presentation.NLDPanels.Student.SelectedSource, _SchoolYear);            
         }
 
         public Configure Configure { get; private set; }
@@ -204,7 +221,7 @@ namespace SH_YearScoreReport_yhcvs
                         iptSchoolYear.Value = sc;
                     
                    
-                    cboRankRilter.Text = Configure.RankFilterTagName;
+                    //cboRankRilter.Text = Configure.RankFilterTagName;
                     foreach (ListViewItem item in lvSubject.Items)
                     {
                         item.Checked = Configure.PrintSubjectList.Contains(item.Text);
@@ -225,7 +242,7 @@ namespace SH_YearScoreReport_yhcvs
                 else
                 {
                     Configure = null;       
-                    cboRankRilter.SelectedIndex = -1;
+                    //cboRankRilter.SelectedIndex = -1;
                     cboTagRank1.SelectedIndex = -1;
                     cboTagRank2.SelectedIndex = -1;
                     chkExportEPOST.Checked = true;
@@ -329,6 +346,7 @@ namespace SH_YearScoreReport_yhcvs
                         if (fields.Contains("學年科目成績" + (this.Configure.SubjectLimit + 1))) this.Configure.WithSchoolYearScore = true;
                         this.Configure.SubjectLimit++;
                     }
+                    MessageBox.Show("上傳完成。");
                 }
                 catch
                 {
@@ -462,19 +480,19 @@ namespace SH_YearScoreReport_yhcvs
                 }
             }
 
-            Configure.RankFilterTagName = cboRankRilter.Text;
+            //Configure.RankFilterTagName = cboRankRilter.Text;
             Configure.RankFilterTagList.Clear();
             foreach (var item in _TagConfigRecords)
             {
                 if (item.Prefix != "")
                 {
-                    if (cboRankRilter.Text == "[" + item.Prefix + "]")
-                        Configure.RankFilterTagList.Add(item.ID);
+                    //if (cboRankRilter.Text == "[" + item.Prefix + "]")
+                    //    Configure.RankFilterTagList.Add(item.ID);
                 }
                 else
                 {
-                    if (cboRankRilter.Text == item.Name)
-                        Configure.RankFilterTagList.Add(item.ID);
+                    //if (cboRankRilter.Text == item.Name)
+                    //    Configure.RankFilterTagList.Add(item.ID);
                 }
             }
             Configure.ExportEpost = chkExportEPOST.Checked;
@@ -542,11 +560,6 @@ namespace SH_YearScoreReport_yhcvs
             #endregion
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void cblvSubject_CheckedChanged(object sender, EventArgs e)
         {
             foreach (ListViewItem lvi in lvSubject.Items)
@@ -565,24 +578,35 @@ namespace SH_YearScoreReport_yhcvs
                 lvi.Checked = cblvSubjTag2.Checked;
         }
 
-        private void iptSchoolYear_ValueChanged(object sender, EventArgs e)
-        {
-            lvSubject.SuspendLayout();
-            lvSubjTag1.SuspendLayout();
-            lvSubjTag2.SuspendLayout();
-            lvSubject.Items.Clear();
-            lvSubjTag1.Items.Clear();
-            lvSubjTag2.Items.Clear();
-
-            _SchoolYear = iptSchoolYear.Value.ToString();
-            iptSchoolYear.Enabled = false;
-            _bgLoadSubject.RunWorkerAsync();
-        }
-
-     
+           
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void iptSchoolYear_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_bgLoadSubject.IsBusy)
+                    _isbgLoadSubjectBusy = true;
+                else
+                {
+                    iptSchoolYear.IsInputReadOnly = true;
+                    _SchoolYear = iptSchoolYear.Value.ToString();
+                    lvSubject.SuspendLayout();
+                    lvSubjTag1.SuspendLayout();
+                    lvSubjTag2.SuspendLayout();
+                    lvSubject.Items.Clear();
+                    lvSubjTag1.Items.Clear();
+                    lvSubjTag2.Items.Clear();
+                    _bgLoadSubject.RunWorkerAsync();
+                }
+            }
+            catch (Exception ex)
+            { 
+            
+            }
         }
     }
 }
