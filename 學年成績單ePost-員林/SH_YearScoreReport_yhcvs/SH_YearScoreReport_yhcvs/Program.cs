@@ -367,10 +367,7 @@ namespace SH_YearScoreReport_yhcvs
 
                         try
                         {
-                            Aspose.Words.Document temp = new Aspose.Words.Document();
-                            temp = conf.Template;                        
-
-                            DataTable dt = table.Clone();
+                                                        
                             List<DataRow> list = new List<DataRow>();
                             foreach (string className in _ClassDic.Keys)
                             {
@@ -380,16 +377,25 @@ namespace SH_YearScoreReport_yhcvs
                                 }
 
                                 list.Sort(DataSort);
+
+                                DataTable dt = new DataTable();
+                                foreach (DataColumn dc in table.Columns)
+                                    dt.Columns.Add(dc.ColumnName);
+                                
                                 foreach (DataRow row in list)
                                 {
                                     dt.ImportRow(row);
                                 }
 
-                                document = temp.Clone();
+                                document = conf.Template.Clone();
                                 document.MailMerge.Execute(dt);
-                                document.Save(folderPath + "\\" + inputReportName + "_" + className + ".doc", Aspose.Words.SaveFormat.Doc);
-                                dt.Clear();
+                                document.MailMerge.RemoveEmptyParagraphs = true;
+                                document.MailMerge.DeleteFields();
+                                document.Save(folderPath + "\\" + inputReportName + "_" + className + ".docx", Aspose.Words.SaveFormat.Docx);
+                                //document = null;
+                                //dt = null;                                
                                 list.Clear();
+                                //GC.Collect();
                             }
                             System.Diagnostics.Process.Start(folderPath);
                         }
@@ -1766,27 +1772,27 @@ namespace SH_YearScoreReport_yhcvs
                                                      
 
                             table.Rows.Add(row);
-                            // debug
-                            table.TableName = "test";
-                            table.WriteXml(Application.StartupPath + @"\學年成績test.xml");
+                            //// debug
+                            //table.TableName = "test";
+                            //table.WriteXml(Application.StartupPath + @"\學年成績test.xml");
                             progressCount++;
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
                         }
 
                         bkw.ReportProgress(90);
 
-                        // 取得樣版合併欄位名稱
-                        StreamWriter sw = new StreamWriter(Application.StartupPath + "\\fieldnames.txt");
-                        foreach (string str in conf.Template.MailMerge.GetFieldNames())
-                        {
-                            sw.WriteLine(str);
-                        }
-                        sw.Flush();
-                        sw.Close();
-                        document = conf.Template;
-                        document.MailMerge.Execute(table);
-                        document.MailMerge.RemoveEmptyParagraphs = true;
-                        document.MailMerge.DeleteFields();
+                        //// 取得樣版合併欄位名稱
+                        //StreamWriter sw = new StreamWriter(Application.StartupPath + "\\fieldnames.txt");
+                        //foreach (string str in conf.Template.MailMerge.GetFieldNames())
+                        //{
+                        //    sw.WriteLine(str);
+                        //}
+                        //sw.Flush();
+                        //sw.Close();
+                        //document = conf.Template;
+                        //document.MailMerge.Execute(table);
+                        //document.MailMerge.RemoveEmptyParagraphs = true;
+                        //document.MailMerge.DeleteFields();
 
                     }
                     catch (Exception exception)
