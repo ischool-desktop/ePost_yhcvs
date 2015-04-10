@@ -311,10 +311,8 @@ namespace SH_YearScoreReport_yhcvs
                     table.Columns.Add("學年" + name);
                 }
 
-                table.Columns.Add("第1學期科目成績及格標準");
-                table.Columns.Add("第1學期科目成績補考標準");
-                table.Columns.Add("第2學期科目成績及格標準");
-                table.Columns.Add("第2學期科目成績補考標準");
+                table.Columns.Add("學期科目成績及格標準");
+                table.Columns.Add("學期科目成績補考標準");
 
 
                 //宣告產生的報表
@@ -805,8 +803,7 @@ namespace SH_YearScoreReport_yhcvs
                         _dtEpost.Columns.Add("CN");
                         _dtEpost.Columns.Add("POSTALCODE");
                         _dtEpost.Columns.Add("POSTALADDRESS");
-                        _dtEpost.Columns.Add("學年度");
-                        _dtEpost.Columns.Add("學期");
+                        _dtEpost.Columns.Add("學年度");                        
                         _dtEpost.Columns.Add("班級");
                         _dtEpost.Columns.Add("座號");
                         _dtEpost.Columns.Add("學號");
@@ -814,49 +811,80 @@ namespace SH_YearScoreReport_yhcvs
 
                         for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
                         {
-                            _dtEpost.Columns.Add("科目" + subjectIndex);
-                            _dtEpost.Columns.Add("學分" + subjectIndex);
-                            _dtEpost.Columns.Add("成績" + subjectIndex);
-                            _dtEpost.Columns.Add("名次" + subjectIndex);
-                            _dtEpost.Columns.Add("備註" + subjectIndex);
+                            _dtEpost.Columns.Add("科目名稱" + subjectIndex);
+                            _dtEpost.Columns.Add("第1學期學分數" + subjectIndex);
+                            _dtEpost.Columns.Add("第1學期科目成績" + subjectIndex);                            
+                            _dtEpost.Columns.Add("第1學期備註" + subjectIndex);
+                            _dtEpost.Columns.Add("第2學期學分數" + subjectIndex);
+                            _dtEpost.Columns.Add("第2學期科目成績" + subjectIndex);
+                            _dtEpost.Columns.Add("第2學期備註" + subjectIndex);
                         }
+                        _dtEpost.Columns.Add("第1學期大功統計");
+                        _dtEpost.Columns.Add("第2學期大功統計");
+                        _dtEpost.Columns.Add("學年大功統計");
+                        _dtEpost.Columns.Add("第1學期大過統計");
+                        _dtEpost.Columns.Add("第2學期大過統計");
+                        _dtEpost.Columns.Add("學年大過統計");
+                        _dtEpost.Columns.Add("第1學期學業成績");
+                        _dtEpost.Columns.Add("第2學期學業成績");
+                        _dtEpost.Columns.Add("第1學期小功統計");
+                        _dtEpost.Columns.Add("第2學期小功統計");
+                        _dtEpost.Columns.Add("學年小功統計");
+                        _dtEpost.Columns.Add("第1學期小過統計");
+                        _dtEpost.Columns.Add("第2學期小過統計");
+                        _dtEpost.Columns.Add("學年小過統計");
+                        _dtEpost.Columns.Add("第1學期學業成績班排名");
+                        _dtEpost.Columns.Add("第2學期體育成績");
+                        _dtEpost.Columns.Add("第1學期嘉獎統計");
+                        _dtEpost.Columns.Add("第2學期嘉獎統計");
+                        _dtEpost.Columns.Add("學年嘉獎統計");
+                        _dtEpost.Columns.Add("第1學期警告統計");
+                        _dtEpost.Columns.Add("第2學期警告統計");
+                        _dtEpost.Columns.Add("學年警告統計");
+                        _dtEpost.Columns.Add("第1學期取得學分數");
+                        _dtEpost.Columns.Add("第2學期取得學分數");
+                        _dtEpost.Columns.Add("第1學期留校察看");
+                        _dtEpost.Columns.Add("第2學期留校察看");
+                        _dtEpost.Columns.Add("學年留校察看");
+                        _dtEpost.Columns.Add("第1學期累計取得學分數");
+                        _dtEpost.Columns.Add("第2學期累計取得學分數");
 
-                        _dtEpost.Columns.Add("學業成績");
-                        _dtEpost.Columns.Add("實習成績");
-                        _dtEpost.Columns.Add("總成績名次");
-                        _dtEpost.Columns.Add("取得學分");
-                        _dtEpost.Columns.Add("累計學分");
-                        _dtEpost.Columns.Add("大功");
-                        _dtEpost.Columns.Add("小功");
-                        _dtEpost.Columns.Add("嘉獎");
-                        _dtEpost.Columns.Add("大過");
-                        _dtEpost.Columns.Add("小過");
-                        _dtEpost.Columns.Add("警告");
-                        _dtEpost.Columns.Add("留校察看");
+                        //_dtEpost.Columns.Add("學業成績");
+                        //_dtEpost.Columns.Add("實習成績");
+                        //_dtEpost.Columns.Add("總成績名次");
+                        //_dtEpost.Columns.Add("取得學分");
+                        //_dtEpost.Columns.Add("累計學分");
+                        //_dtEpost.Columns.Add("大功");
+                        //_dtEpost.Columns.Add("小功");
+                        //_dtEpost.Columns.Add("嘉獎");
+                        //_dtEpost.Columns.Add("大過");
+                        //_dtEpost.Columns.Add("小過");
+                        //_dtEpost.Columns.Add("警告");
+                        //_dtEpost.Columns.Add("留校察看");
 
 
-                        // 固定會對照
-                        Dictionary<string, string> eKeyValDict = new Dictionary<string, string>();
-                        eKeyValDict.Add("收件人", "CN");
-                        eKeyValDict.Add("學年度", "學年度");
-                        eKeyValDict.Add("學期", "學期");
-                        eKeyValDict.Add("班級", "班級");
-                        eKeyValDict.Add("座號", "座號");
-                        eKeyValDict.Add("學號", "學號");
-                        eKeyValDict.Add("姓名", "姓名");
-                        eKeyValDict.Add("學期學業成績", "學業成績");
-                        eKeyValDict.Add("學期實習科目成績", "實習成績");
-                        eKeyValDict.Add("第2學期取得學分數", "取得學分");
-                        eKeyValDict.Add("累計取得學分數", "累計學分");
-                        eKeyValDict.Add("大功統計", "大功");
-                        eKeyValDict.Add("小功統計", "小功");
-                        eKeyValDict.Add("嘉獎統計", "嘉獎");
-                        eKeyValDict.Add("大過統計", "大過");
-                        eKeyValDict.Add("小過統計", "小過");
-                        eKeyValDict.Add("警告統計", "警告");
-                        eKeyValDict.Add("留校察看", "留校察看");
-                        eKeyValDict.Add("班導師", "導師姓名");
-                        eKeyValDict.Add("導師評語", "導師評語");
+                        //// 固定會對照
+                        //Dictionary<string, string> eKeyValDict = new Dictionary<string, string>();
+                        //eKeyValDict.Add("收件人", "CN");
+                        //eKeyValDict.Add("學年度", "學年度");
+                        //eKeyValDict.Add("學期", "學期");
+                        //eKeyValDict.Add("班級", "班級");
+                        //eKeyValDict.Add("座號", "座號");
+                        //eKeyValDict.Add("學號", "學號");
+                        //eKeyValDict.Add("姓名", "姓名");
+                        //eKeyValDict.Add("學期學業成績", "學業成績");
+                        //eKeyValDict.Add("學期實習科目成績", "實習成績");
+                        //eKeyValDict.Add("第2學期取得學分數", "取得學分");
+                        //eKeyValDict.Add("累計取得學分數", "累計學分");
+                        //eKeyValDict.Add("大功統計", "大功");
+                        //eKeyValDict.Add("小功統計", "小功");
+                        //eKeyValDict.Add("嘉獎統計", "嘉獎");
+                        //eKeyValDict.Add("大過統計", "大過");
+                        //eKeyValDict.Add("小過統計", "小過");
+                        //eKeyValDict.Add("警告統計", "警告");
+                        //eKeyValDict.Add("留校察看", "留校察看");
+                        //eKeyValDict.Add("班導師", "導師姓名");
+                        //eKeyValDict.Add("導師評語", "導師評語");
                         
 
                         // 綜合評語
@@ -878,11 +906,13 @@ namespace SH_YearScoreReport_yhcvs
                             if (!CommList.Contains(face))
                                 CommList.Add(face);
 
-                            if (!_dtEpost.Columns.Contains(face))
-                                _dtEpost.Columns.Add(face);
+                            if (!_dtEpost.Columns.Contains(f1))
+                                _dtEpost.Columns.Add(f1);
+                            if (!_dtEpost.Columns.Contains(f2))
+                                _dtEpost.Columns.Add(f2);
 
-                            if (!eKeyValDict.ContainsKey(f1))
-                                eKeyValDict.Add(f1, face);
+                            //if (!eKeyValDict.ContainsKey(f1))
+                            //    eKeyValDict.Add(f1, face);
                         }
                        #endregion
                         #region 缺曠對照表
@@ -915,27 +945,33 @@ namespace SH_YearScoreReport_yhcvs
                                     {
                                         table.Columns.Add(attendanceKeyName);
                                     }
+                                    if (!_dtEpost.Columns.Contains(attendanceKeyName))
+                                        _dtEpost.Columns.Add(attendanceKeyName);
                                 }
 
-                                if (pt == "一般")
-                                    aidx = 1;
-                                else
-                                    aidx = 2;
+                                //if (pt == "一般")
+                                //    aidx = 1;
+                                //else
+                                //    aidx = 2;
 
-                                string attendanceKey1 = absence.Name + aidx;
-                                if (!_dtEpost.Columns.Contains(attendanceKey1))
-                                    _dtEpost.Columns.Add(attendanceKey1);
+                                //string attendanceKey1 = absence.Name + aidx;
+                             
 
-                                if (!eKeyValDict.ContainsKey(attendanceKey))
-                                    eKeyValDict.Add(attendanceKey, attendanceKey1);
+                                //if (!eKeyValDict.ContainsKey(attendanceKey))
+                                //    eKeyValDict.Add(attendanceKey, attendanceKey1);
                             }
                         }
                         #endregion
 
-                        if (!_dtEpost.Columns.Contains("導師姓名"))
-                            _dtEpost.Columns.Add("導師姓名");
-                        if (!_dtEpost.Columns.Contains("導師評語"))
-                            _dtEpost.Columns.Add("導師評語");
+                        if (!_dtEpost.Columns.Contains("第1學期導師姓名"))
+                            _dtEpost.Columns.Add("第1學期導師姓名");
+                        if (!_dtEpost.Columns.Contains("第1學期導師評語"))
+                            _dtEpost.Columns.Add("第1學期導師評語");
+                        if (!_dtEpost.Columns.Contains("第2學期導師姓名"))
+                            _dtEpost.Columns.Add("第2學期導師姓名");
+                        if (!_dtEpost.Columns.Contains("第2學期導師評語"))
+                            _dtEpost.Columns.Add("第2學期導師評語");
+
 
 
                         bkw.ReportProgress(3);
@@ -1793,6 +1829,128 @@ namespace SH_YearScoreReport_yhcvs
                         //document.MailMerge.Execute(table);
                         //document.MailMerge.RemoveEmptyParagraphs = true;
                         //document.MailMerge.DeleteFields();
+
+                        #region 處理 epost
+                        foreach (DataRow dr in table.Rows)
+                        {
+                            DataRow data = _dtEpost.NewRow();
+
+                            // 取得學生及格與補考標準
+                            string studID = dr["學生系統編號"].ToString();
+                            int grYear;
+                            int.TryParse(dr["學生班級年級"].ToString(), out grYear);
+
+                            // 及格
+                            decimal scA = 0;
+                            // 補考
+                            decimal scB = 0;
+                            if (StudentApplyLimitDict.ContainsKey(studID))
+                            {
+                                string sA = grYear + "_及";
+                                string sB = grYear + "_補";
+
+                                if (StudentApplyLimitDict[studID].ContainsKey(sA))
+                                    scA = StudentApplyLimitDict[studID][sA];
+
+                                if (StudentApplyLimitDict[studID].ContainsKey(sB))
+                                    scB = StudentApplyLimitDict[studID][sB];
+                            }
+
+                            dr["學期科目成績及格標準"] = scA;
+                            dr["學期科目成績補考標準"] = scB;
+
+                            // POSTALADDRESS
+                            string address = dr["收件人地址"].ToString();
+                            string zip1 = dr["通訊地址郵遞區號"].ToString() + " ";
+                            string zip2 = dr["戶籍地址郵遞區號"].ToString() + " ";
+                            if (address.Contains(zip1))
+                            {
+                                address = address.Replace(zip1, "");
+                                data["POSTALCODE"] = dr["通訊地址郵遞區號"].ToString();
+                            }
+
+                            if (address.Contains(zip2))
+                            {
+                                address = address.Replace(zip2, "");
+                                data["POSTALCODE"] = dr["戶籍地址郵遞區號"].ToString();
+                            }
+
+                            data["POSTALADDRESS"] = address;
+
+                            // 處理科目成績
+                            for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
+                            {
+                                if (dr["科目名稱" + subjectIndex].ToString() != "")
+                                {                                  
+                                    // 第1學期科目成績
+                                    decimal sc1;
+                                    if (decimal.TryParse(dr["第1學期科目成績" + subjectIndex].ToString(), out sc1))
+                                    {
+                                        // 小於及格標準
+                                        if (sc1 < scA)
+                                        {
+                                            // 可以補考,不可補考
+                                            if (sc1 >= scB)
+                                            {
+                                                data["第1學期備註" + subjectIndex] = "*";
+                                                // *
+                                                dr["第1學期科目可補考註記" + subjectIndex] = "\f";
+                                            }
+                                            else
+                                            {
+                                                data["第1學期備註" + subjectIndex] = "#";
+                                                // #
+                                                dr["第1學期科目不可補考註記" + subjectIndex] = "\f";
+                                            }
+                                        }
+                                    }
+
+                                    // 第2學期科目成績
+                                    decimal sc2;
+                                    if (decimal.TryParse(dr["第2學期科目成績" + subjectIndex].ToString(), out sc2))
+                                    {
+                                        // 小於及格標準
+                                        if (sc2 < scA)
+                                        {
+                                            // 可以補考,不可補考
+                                            if (sc2 >= scB)
+                                            {
+                                                data["第2學期備註" + subjectIndex] = "*";
+                                                // *
+                                                dr["第2學期科目可補考註記" + subjectIndex] = "\f";
+                                            }
+                                            else
+                                            {
+                                                data["第2學期備註" + subjectIndex] = "#";
+                                                // #
+                                                dr["第2學期科目不可補考註記" + subjectIndex] = "\f";
+                                            }
+                                        }
+                                    }                                 
+                                 
+                                }
+                            }
+
+                            // 處理資料填入ePost欄位
+                            foreach (DataColumn dc in _dtEpost.Columns)
+                            {
+                                if (table.Columns.Contains(dc.ColumnName))
+                                    data[dc.ColumnName] = dr[dc.ColumnName];
+                            }  
+
+                            // 處理綜合評語字串前加"
+                            foreach (string str in CommList)
+                            {
+                                if (_dtEpost.Columns.Contains(str))
+                                    data[str] = @"""" + data[str].ToString() + @"""";
+                            }
+
+                            data["第1學期導師評語"] = @"""" + data["第1學期導師評語"].ToString() + @"""";
+                            data["第2學期導師評語"] = @"""" + data["第2學期導師評語"].ToString() + @""""; 
+                            _dtEpost.Rows.Add(data);
+                        }
+                        #endregion
+
 
                     }
                     catch (Exception exception)

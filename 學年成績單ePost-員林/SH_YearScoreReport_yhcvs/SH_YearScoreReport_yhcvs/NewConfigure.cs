@@ -174,7 +174,7 @@ namespace SH_YearScoreReport_yhcvs
             try
             {  
                 System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-                stream.Write(Properties.Resources.歡樂的合併欄位總表, 0, Properties.Resources.歡樂的合併欄位總表.Length);
+                stream.Write(Properties.Resources.員林家商學年成績單合併欄位總表, 0, Properties.Resources.員林家商學年成績單合併欄位總表.Length);
                 stream.Flush();
                 stream.Close();
                 System.Diagnostics.Process.Start(path);
