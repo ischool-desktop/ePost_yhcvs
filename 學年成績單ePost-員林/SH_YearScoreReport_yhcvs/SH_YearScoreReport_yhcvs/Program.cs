@@ -200,6 +200,8 @@ namespace SH_YearScoreReport_yhcvs
                     table.Columns.Add("第1學期科目重修成績註記" + subjectIndex);
                     table.Columns.Add("第1學期科目手動成績註記" + subjectIndex);
                     table.Columns.Add("第1學期科目學年成績註記" + subjectIndex);
+                    table.Columns.Add("第1學期科目可補考註記" + subjectIndex);
+                    table.Columns.Add("第1學期科目不可補考註記" + subjectIndex);
                     table.Columns.Add("第1學期科目取得學分" + subjectIndex);
                     table.Columns.Add("第1學期科目未取得學分註記" + subjectIndex);
 
