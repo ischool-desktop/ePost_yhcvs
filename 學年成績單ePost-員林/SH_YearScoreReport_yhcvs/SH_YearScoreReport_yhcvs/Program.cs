@@ -81,9 +81,9 @@ namespace SH_YearScoreReport_yhcvs
         // 第2學期取得
         static Dictionary<string, decimal> _studPassSumCreditDict2 = new Dictionary<string, decimal>();
 
-        // 第1學期累計取得學分
+        // 第1學期累計取得學分,需要注意員林客製：畫面上學年度第1學期(含)以前累計所有學分數。
         static Dictionary<string, decimal> _studSumPassCreditDict1 = new Dictionary<string, decimal>();
-        // 第2學期累計取得學分
+        // 第2學期累計取得學分，需要注意員林客製：畫面上學年度(含)以前累計所有學分數。
         static Dictionary<string, decimal> _studSumPassCreditDict2 = new Dictionary<string, decimal>();
 
         // 累計取得
@@ -1406,6 +1406,9 @@ namespace SH_YearScoreReport_yhcvs
 
                             #endregion
 
+                            // 畫面上學年度
+                            int confSchoolYear = int.Parse(conf.SchoolYear);
+
                             // 處理學期取得學分與累計取得學分
                             foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
                             {
@@ -1420,13 +1423,15 @@ namespace SH_YearScoreReport_yhcvs
                                     if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Semester.ToString() == "2" && semesterSubjectScore.Pass)
                                         _studPassSumCreditDict2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
-                                    // 第1學期累計取得學分
-                                    if (semesterSubjectScore.Semester.ToString() == "1" && semesterSubjectScore.Pass)
-                                        _studSumPassCreditDict1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                    // 第1學期累計取得學分,與畫面學年度相同的第1學期且學年度小且取得學分
+                                    if (semesterSubjectScore.SchoolYear<=confSchoolYear && semesterSubjectScore.Pass)
+                                        if(semesterSubjectScore.SchoolYear<confSchoolYear ||(semesterSubjectScore.SchoolYear==confSchoolYear && semesterSubjectScore.Semester==1))
+                                            _studSumPassCreditDict1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
-                                    // 第2學期累計取得學分
-                                    if (semesterSubjectScore.Semester.ToString() == "2" && semesterSubjectScore.Pass)
+                                    // 第2學期累計取得學分,與畫面學年度相同且小且取得學分
+                                    if (semesterSubjectScore.SchoolYear<=confSchoolYear && semesterSubjectScore.Pass)                                        
                                         _studSumPassCreditDict2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                    
 
                                     // 累計取得
                                     if (semesterSubjectScore.Pass)
