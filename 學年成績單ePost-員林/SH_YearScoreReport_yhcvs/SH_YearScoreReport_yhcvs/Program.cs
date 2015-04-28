@@ -450,6 +450,7 @@ namespace SH_YearScoreReport_yhcvs
                             accessHelper.StudentHelper.FillSemesterEntryScore(true, studentRecords);
                             accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentRecords);
                             accessHelper.StudentHelper.FillSemesterMoralScore(true, studentRecords);
+                            accessHelper.StudentHelper.FillSemesterHistory(studentRecords);
                             accessHelper.StudentHelper.FillField("SchoolYearEntryClassRating", studentRecords);
 
                             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
@@ -1440,9 +1441,20 @@ namespace SH_YearScoreReport_yhcvs
                             }
 
                             row["第1學期取得學分數"] = _studPassSumCreditDict1[stuRec.StudentID];
-                            row["第2學期取得學分數"] = _studPassSumCreditDict2[stuRec.StudentID];
+
+                            // 員林客製，當第2學期取得學分數0學分，顯示空白
+                            if (_studPassSumCreditDict2[stuRec.StudentID] == 0)
+                                row["第2學期取得學分數"] = "";
+                            else
+                                row["第2學期取得學分數"] = _studPassSumCreditDict2[stuRec.StudentID];
+
                             row["第1學期累計取得學分數"] = _studSumPassCreditDict1[stuRec.StudentID];
                             row["第2學期累計取得學分數"] = _studSumPassCreditDict2[stuRec.StudentID];
+
+                            // 員林客製，當第1學期累計取得學分數與第2學期累計取得學分數相同，第2學期累計取得學分數空白
+                            if (_studSumPassCreditDict1[stuRec.StudentID] == _studSumPassCreditDict2[stuRec.StudentID])
+                                row["第2學期累計取得學分數"] = "";
+
                             row["累計取得學分數"] = _studPassSumCreditDictAll[stuRec.StudentID];
 
 
@@ -1837,6 +1849,24 @@ namespace SH_YearScoreReport_yhcvs
                         //document.MailMerge.RemoveEmptyParagraphs = true;
                         //document.MailMerge.DeleteFields();
 
+
+                        // 畫面上學度對應到成績年級
+                        int cSy=int.Parse(conf.SchoolYear);
+                        Dictionary<string, int> studGyDict = new Dictionary<string, int>();
+                        // 取得學期對照                       
+                        foreach (StudentRecord sr in studentRecords)
+                        {
+                            foreach (SemesterHistory sh in sr.SemesterHistoryList)
+                            {
+                                if (sh.SchoolYear == cSy)
+                                {
+                                    if (!studGyDict.ContainsKey(sr.StudentID))
+                                        studGyDict.Add(sr.StudentID, sh.GradeYear);
+                                }
+                            }
+                        }
+
+
                         #region 處理 epost
                         foreach (DataRow dr in table.Rows)
                         {
@@ -1844,8 +1874,13 @@ namespace SH_YearScoreReport_yhcvs
 
                             // 取得學生及格與補考標準
                             string studID = dr["學生系統編號"].ToString();
-                            int grYear;
-                            int.TryParse(dr["學生班級年級"].ToString(), out grYear);
+                            int grYear=0;
+
+                            //int.TryParse(dr["學生班級年級"].ToString(), out grYear);
+
+                            // 學期對照年級
+                            if (studGyDict.ContainsKey(studID))
+                                grYear = studGyDict[studID];
 
                             // 及格
                             decimal scA = 0;
