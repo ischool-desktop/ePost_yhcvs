@@ -207,6 +207,7 @@ namespace SH_YearScoreReport_yhcvs
 
                     // 新增學年科目成績--
                     table.Columns.Add("學年科目成績" + subjectIndex);
+                    table.Columns.Add("科目學年成績" + subjectIndex);
 
 
                 }
@@ -821,6 +822,7 @@ namespace SH_YearScoreReport_yhcvs
                             _dtEpost.Columns.Add("第2學期學分數" + subjectIndex);
                             _dtEpost.Columns.Add("第2學期科目成績" + subjectIndex);
                             _dtEpost.Columns.Add("第2學期備註" + subjectIndex);
+                            _dtEpost.Columns.Add("科目學年成績" + subjectIndex);
                         }
                         _dtEpost.Columns.Add("第1學期大功統計");
                         _dtEpost.Columns.Add("第2學期大功統計");
@@ -1620,6 +1622,7 @@ namespace SH_YearScoreReport_yhcvs
                                         {
                                             row["科目名稱" + subjectIndex] = schoolYearSubjectScore.Subject;
                                             row["學年科目成績" + subjectIndex] = schoolYearSubjectScore.Score;
+                                            row["科目學年成績" + subjectIndex] = schoolYearSubjectScore.Score;
                                         }
                                     }
                                     #endregion
