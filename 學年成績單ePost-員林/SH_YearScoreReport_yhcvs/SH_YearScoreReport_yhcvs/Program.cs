@@ -839,7 +839,7 @@ namespace SH_YearScoreReport_yhcvs
                         _dtEpost.Columns.Add("第2學期小過統計");
                         _dtEpost.Columns.Add("學年小過統計");
                         _dtEpost.Columns.Add("第1學期學業成績班排名");
-                        _dtEpost.Columns.Add("第2學期體育成績");
+                        _dtEpost.Columns.Add("第2學期學業成績班排名");                        
                         _dtEpost.Columns.Add("第1學期嘉獎統計");
                         _dtEpost.Columns.Add("第2學期嘉獎統計");
                         _dtEpost.Columns.Add("學年嘉獎統計");
@@ -853,7 +853,8 @@ namespace SH_YearScoreReport_yhcvs
                         _dtEpost.Columns.Add("學年留校察看");
                         _dtEpost.Columns.Add("第1學期累計取得學分數");
                         _dtEpost.Columns.Add("第2學期累計取得學分數");
-
+                        _dtEpost.Columns.Add("科目成績及格標準");
+                        _dtEpost.Columns.Add("科目成績補考標準");
                         //_dtEpost.Columns.Add("學業成績");
                         //_dtEpost.Columns.Add("實習成績");
                         //_dtEpost.Columns.Add("總成績名次");
@@ -1991,12 +1992,26 @@ namespace SH_YearScoreReport_yhcvs
                             }
 
                             data["第1學期導師評語"] = @"""" + data["第1學期導師評語"].ToString() + @"""";
-                            data["第2學期導師評語"] = @"""" + data["第2學期導師評語"].ToString() + @""""; 
+                            data["第2學期導師評語"] = @"""" + data["第2學期導師評語"].ToString() + @"""";
+                            
+
+                            if (dr["學期科目成績及格標準"] != null)
+                                data["科目成績及格標準"] = dr["學期科目成績及格標準"].ToString();
+
+                            if (dr["學期科目成績補考標準"] != null)
+                                data["科目成績補考標準"] = dr["學期科目成績補考標準"].ToString();
+
+
                             _dtEpost.Rows.Add(data);
                         }
                         #endregion
 
-
+                        // 調整 ePost 欄位名稱 // 取消 : ：
+                        foreach (DataColumn dc in _dtEpost.Columns)
+                        {
+                            dc.Caption = dc.Caption.Replace(":", "").Replace("：", "");
+                            dc.ColumnName = dc.ColumnName.Replace(":", "").Replace("：", "");
+                        }
                     }
                     catch (Exception exception)
                     {
