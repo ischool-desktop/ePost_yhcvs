@@ -855,6 +855,8 @@ namespace SH_YearScoreReport_yhcvs
                         _dtEpost.Columns.Add("第2學期累計取得學分數");
                         _dtEpost.Columns.Add("科目成績及格標準");
                         _dtEpost.Columns.Add("科目成績補考標準");
+                        _dtEpost.Columns.Add("第1學期服務學習時數");
+                        _dtEpost.Columns.Add("第2學期服務學習時數");
                         //_dtEpost.Columns.Add("學業成績");
                         //_dtEpost.Columns.Add("實習成績");
                         //_dtEpost.Columns.Add("總成績名次");
@@ -2005,6 +2007,20 @@ namespace SH_YearScoreReport_yhcvs
                             _dtEpost.Rows.Add(data);
                         }
                         #endregion
+
+                        //// debug ePost 內與樣版內欄位相同
+                        //List<string> fieldList = new List<string>();
+                        //foreach (DataColumn dc in _dtEpost.Columns)
+                        //    fieldList.Add(dc.ColumnName);
+
+                        //StreamWriter sw = new StreamWriter (Application.StartupPath+"\\field.txt",false);
+
+                        //foreach (string str in conf.Template.MailMerge.GetFieldNames())
+                        //{
+                        //    if (!fieldList.Contains(str))
+                        //        sw.WriteLine(str);
+                        //}
+                        //sw.Close();
 
                         // 調整 ePost 欄位名稱 // 取消 : ：
                         foreach (DataColumn dc in _dtEpost.Columns)
