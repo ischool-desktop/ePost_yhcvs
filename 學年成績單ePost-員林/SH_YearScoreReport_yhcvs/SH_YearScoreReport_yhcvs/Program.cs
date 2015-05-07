@@ -1907,6 +1907,10 @@ namespace SH_YearScoreReport_yhcvs
                             dr["學期科目成績及格標準"] = scA;
                             dr["學期科目成績補考標準"] = scB;
 
+                            // 收件人
+                            if (dr["收件人"] != null)
+                                data["CN"] = dr["收件人"].ToString();
+
                             // POSTALADDRESS
                             string address = dr["收件人地址"].ToString();
                             string zip1 = dr["通訊地址郵遞區號"].ToString() + " ";
