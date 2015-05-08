@@ -971,15 +971,16 @@ namespace SH_YearScoreReport_yhcvs
                         }
                         #endregion
 
-                        if (!_dtEpost.Columns.Contains("第1學期導師姓名"))
-                            _dtEpost.Columns.Add("第1學期導師姓名");
+                        //if (!_dtEpost.Columns.Contains("第1學期導師姓名"))
+                        //    _dtEpost.Columns.Add("第1學期導師姓名");
                         if (!_dtEpost.Columns.Contains("第1學期導師評語"))
                             _dtEpost.Columns.Add("第1學期導師評語");
-                        if (!_dtEpost.Columns.Contains("第2學期導師姓名"))
-                            _dtEpost.Columns.Add("第2學期導師姓名");
+                        //if (!_dtEpost.Columns.Contains("第2學期導師姓名"))
+                        //    _dtEpost.Columns.Add("第2學期導師姓名");
                         if (!_dtEpost.Columns.Contains("第2學期導師評語"))
                             _dtEpost.Columns.Add("第2學期導師評語");
-
+                        if (!_dtEpost.Columns.Contains("班導師"))
+                            _dtEpost.Columns.Add("班導師");
 
 
                         bkw.ReportProgress(3);
@@ -2006,7 +2007,6 @@ namespace SH_YearScoreReport_yhcvs
 
                             if (dr["學期科目成績補考標準"] != null)
                                 data["科目成績補考標準"] = dr["學期科目成績補考標準"].ToString();
-
 
                             _dtEpost.Rows.Add(data);
                         }
