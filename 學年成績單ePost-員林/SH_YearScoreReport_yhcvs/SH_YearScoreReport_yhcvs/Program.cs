@@ -298,6 +298,7 @@ namespace SH_YearScoreReport_yhcvs
                 table.Columns.Add("學年健康與護理成績");
                 table.Columns.Add("學年實習科目成績");
                 table.Columns.Add("學年德行成績");
+                table.Columns.Add("學年專業科目成績");
                 table.Columns.Add("學年學業成績班排名");
 
                 // 服務學習時數
